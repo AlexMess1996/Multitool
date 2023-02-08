@@ -183,13 +183,11 @@ header h1 {
 .table{
 	inline: 1;
 	background-color: white;
-	width:325px;
+	
 }
 
-.buttons {
-	width: 200px;
 
-}
+
 footer{
 	position:fixed;
 	bottom:0;
@@ -226,6 +224,10 @@ footer{
 </div>
 <div class= "table">
 <?php
+$GLOBALS['check'] = false;
+$GLOBALS['a'] = 5;
+
+
 function toBrikker($var){
 	$a = $var/100;
 	$maxCap = 16;
@@ -249,9 +251,61 @@ $sql = "SELECT Dato,Start,Slutt,Pris FROM elbil";
 
 $result = $conn->query($sql);
 
-if($result ->num_rows > 0){
+if(isset($_POST['search'])){
+	$a = 10;
+	$month = $_POST["month"];
+	$sqls = "SELECT Dato,Start,Slutt,Pris FROM elbil WHERE MONTH(Dato) = '$month';";
+	$results = $conn->query($sqls);
 	
+} 
+
+if($a == 10){
+	if($results ->num_rows > 0){
+	$sum = 0;
 	echo "<table border='1'>
+	
+
+<tr>
+
+<th>Dato</th>
+
+<th>Start</th>
+
+<th>Slutt</th>
+
+<th>Pris</th>
+
+</tr>";
+	
+	while($row = $results->fetch_assoc()){
+		 echo "<tr>";
+
+  echo "<td>" . $row['Dato'] . "</td>";
+
+  echo "<td>" .toBrikker($row["Start"]) . "</td>";
+
+  echo "<td>" . toBrikker($row["Slutt"]). "</td>";
+
+  echo "<td>" . round($row["Pris"],2) . " NOK</td>";
+	$sum += round($row["Pris"],2);
+  echo "</tr>";
+  
+	}
+	echo "<tr>";
+	echo "<th> Totalt: </th>";
+  echo "<td>" . $sum . " NOK</td>";
+  echo "</tr>";
+	echo "</table>";
+
+} else{
+	echo "0 results";
+}
+	
+}else{
+	if($result ->num_rows > 0){
+	$sum = 0;
+	echo "<table border='1'>
+	
 
 <tr>
 
@@ -275,17 +329,27 @@ if($result ->num_rows > 0){
   echo "<td>" . toBrikker($row["Slutt"]). "</td>";
 
   echo "<td>" . round($row["Pris"],2) . " NOK</td>";
-
+	$sum += round($row["Pris"],2);
   echo "</tr>";
-		
+  
 	}
+	echo "<tr>";
+	echo "<th> Totalt: </th>";
+  echo "<td>" . $sum . " NOK</td>";
+  echo "</tr>";
 	echo "</table>";
 
 } else{
 	echo "0 results";
 }
 
+}
+
+
+
+
 $conn->close();
+
 
 ?>
 </div>
@@ -299,10 +363,31 @@ $conn->close();
 <button>Edit</button>
 </a>
 <br>
+<form action="show.php" method="post">
+<select size="1" name="month">
+ <optgroup label="Choose a month">
+	<option value="1">January</option>
+	<option value="2">February</option>
+	<option value="3">March</option>
+	<option value="4">April</option>
+	<option value="5">May</option>
+	<option value="6">Juny</option>
+	<option value="7">July</option>
+	<option value="8">August</option>
+	<option value="9">September</option>
+	<option value="10">October</option>
+	<option value="11">November</option>
+	<option value="12">December</option>
+</select>
+
+
+<input type="submit" value="Search" name="search">
+</form>
+
+
 <a href= "home.php">
 <button>Hjem</button>
 </a>
-
 </div>
 
 </div>
