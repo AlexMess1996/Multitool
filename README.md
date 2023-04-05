@@ -1,6 +1,7 @@
 # Multitool
 
 NOTES:
+*This program is specifically programmed to calculate Citroen CZero model vehicle.*
 You have to run the .php files locally. Use XAMPP and start both Apache local server and MySQL.
 <h3>Home page</h3>
 
