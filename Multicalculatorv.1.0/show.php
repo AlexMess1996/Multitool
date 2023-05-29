@@ -86,7 +86,7 @@ $conn =new mysqli($dbhost,$dbusername,$dbpass,$dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT Dato,Start,Slutt,Pris FROM elbil";
+$sql = "SELECT Dato,Start,Slutt,Pris FROM elbil WHERE MONTH(Dato) = 1;";
 
 $result = $conn->query($sql);
 
